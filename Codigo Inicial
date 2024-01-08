@@ -1,0 +1,95 @@
+library(tidyr)
+library(stringr)
+library(dplyr)
+library(mice)
+library(corrplot)
+library(VIM)
+
+Data = read.csv("C:\\Users\\pedro\\Documents\\ISCTE\\Mestrado\\Data Science\\Semestre 1\\Reconhecimento de Padrões\\Trabalho\\CSVPadroesv2.csv", header = TRUE)
+
+Data <- head(Data, -5)
+
+#Coloca a DB com dados por cada país
+Data <- Data %>%
+  select(-Series.Code) %>%
+  spread(key = Series.Name, value = X2015..YR2015.) %>%
+  mutate_all(~na_if(.,".."))
+
+names(Data) <- gsub(" ", ".", names(Data))
+names(Data) <- gsub(",", "", names(Data))
+names(Data) <- gsub("\\(", "", names(Data))
+names(Data) <- gsub("\\$", "D", names(Data))
+names(Data) <- gsub("\\)", "", names(Data))
+names(Data) <- gsub("\\%", "", names(Data))
+
+#Verifica os indices que têm mais de 20% de Nulos
+prop_na <- colMeans(is.na(Data))
+print(prop_na)
+colunas_manter <- names(prop_na[prop_na <= 0.2])
+colunas_manter
+
+#Retira os indices com mais de 20% de nulos
+Data <- Data[colunas_manter]
+
+#Verifica os paises que têm mais de 20% de Nulos
+prop_na_lines <- rowMeans(is.na(Data))
+print(prop_na_lines)
+prop_na_lines_df = data.frame(Pais = Data$Country.Name , Percentagem = prop_na_lines)
+paises_manter <- prop_na_lines_df %>%
+  filter(Percentagem < 0.2) %>%
+  pull(Pais)
+
+#Retira os paises com mais de 20% de nulos
+Data <- Data %>%
+  filter(Country.Name %in% paises_manter)
+
+#Ajustar colunas para numeric 
+{
+Data$Adjusted.net.national.income.per.capita.current.USD <- as.numeric(Data$Adjusted.net.national.income.per.capita.current.USD)
+Data$Birth.rate.crude.per.1000.people <- as.numeric(Data$Birth.rate.crude.per.1000.people)
+Data$Current.health.expenditure..of.GDP <- as.numeric(Data$Current.health.expenditure..of.GDP)
+Data$Foreign.direct.investment.net.BoP.current.USD <- as.numeric(Data$Foreign.direct.investment.net.BoP.current.USD)
+Data$GDP.current.USD <- as.numeric(Data$GDP.current.USD)
+Data$GDP.per.capita.current.USD <- as.numeric(Data$GDP.per.capita.current.USD)
+Data$Individuals.using.the.Internet..of.population <- as.numeric(Data$Individuals.using.the.Internet..of.population)
+Data$Inflation.GDP.deflator.annual. <- as.numeric(Data$Inflation.GDP.deflator.annual.)
+Data$Labor.force.total <- as.numeric(Data$Labor.force.total)
+Data$Life.expectancy.at.birth.total.years <- as.numeric(Data$Life.expectancy.at.birth.total.years)
+Data$Mortality.rate.infant.per.1000.live.births <- as.numeric(Data$Mortality.rate.infant.per.1000.live.births)
+Data$People.using.at.least.basic.drinking.water.services..of.population <- as.numeric(Data$People.using.at.least.basic.drinking.water.services..of.population)
+Data$Population.total <- as.numeric(Data$Population.total)
+Data$School.enrollment.primary..gross <- as.numeric(Data$School.enrollment.primary..gross)
+Data$Suicide.mortality.rate.per.100000.population <- as.numeric(Data$Suicide.mortality.rate.per.100000.population)
+  }
+
+# Realize a imputação KNN
+Data_kNN <- kNN(Data, k = 5, imp_var = FALSE)
+
+
+
+str(Data)
+
+####ACP####
+#Summary and covariance matrix
+AAA <- Data[,3:17]
+summary(AAA)
+round(var(AAA),2)
+
+#scatterplot
+pairs(AAA, pch = 19, lower.panel = NULL)
+
+#correlation matrix
+correlation <- cor(AAA)
+round(correlation,3)
+
+#corrplot
+par(oma = c(2, 2, 2, 2)) # space around for text
+corrplot.mixed(correlation, 
+               order = "hclust", #order of variables
+               tl.pos = "lt", #text left + top
+               upper = "ellipse")
+
+####DESENVOLVIMENTO TIPOLOGIA####
+
+summary(Data)
+str(Data)
