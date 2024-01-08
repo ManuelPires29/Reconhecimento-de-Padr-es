@@ -65,7 +65,19 @@ Data$Suicide.mortality.rate.per.100000.population <- as.numeric(Data$Suicide.mor
 # Realize a imputação KNN
 Data_kNN <- kNN(Data, k = 5, imp_var = FALSE)
 
-
+# Encontra os Outliers e substitui por NA
+for (col in names(Data_kNN)) {
+  if (is.numeric(Data_kNN[[col]])) {
+    quartiles <- quantile(Data_kNN[[col]], probs=c(.25, .75), na.rm = TRUE)
+    
+    iQRange <- IQR(Data_kNN[[col]], na.rm = TRUE)
+    lowerLimit <- quartiles[1] - 1.5 * iQRange
+    upperLimit <- quartiles[2] + 1.5 * iQRange
+    
+    # Substituir outliers por NA diretamente na coluna existente
+    Data_kNN[[col]][Data_kNN[[col]] < lowerLimit | Data_kNN[[col]] > upperLimit] <- NA
+  }
+}
 
 str(Data)
 
