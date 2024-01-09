@@ -98,8 +98,34 @@ normalize_minmax <- function(x) {
 # Aplicar a função de normalização a todas as colunas numéricas
 Data_kNN[, colunas_numericas] <- lapply(Data_kNN[, colunas_numericas], normalize_minmax)
 
+## Alteração do nome das colunas por siglas para facilitar a visualização na matriz de correlação
+#Ver nomes
+names(Data_kNN)
 
+#Criar dicionário para consulta
+Dicionario <- data.frame(
+  Nomes = c("Adjusted.net.national.income.per.capita.current.USD","Birth.rate.crude.per.1000.people","Current.health.expenditure.%.of.GDP","Foreign.direct.investment.net.BoP.current.USD","GDP.current.USD","GDP.per.capita.current.USD","Individuals.using.the.Internet.%.of.population","Inflation.GDP.deflator.annual.","Labor.force.total","Life.expectancy.at.birth.total.years","Mortality.rate.infant.per.1000.live.births","People.using.at.least.basic.drinking.water.services.%.of.population","Population.total","School.enrollment.primary..gross","Suicide.mortality.rate.per.100000.population"),
+  Siglas = c("ANNIPC","BR","HE","FDI","GDP","GDPPC","IUI","IGDA","LF","LEAB","MRI","BDWS","POP","SEP","SMR")
+)
 
+#Alterar os nomes para as Siglas assignadas no dicionário
+{
+colnames(Data_kNN)[colnames(Data_kNN) == "Adjusted.net.national.income.per.capita.current.USD"] <- "ANNIPC"
+colnames(Data_kNN)[colnames(Data_kNN) == "Birth.rate.crude.per.1000.people"] <- "BR"
+colnames(Data_kNN)[colnames(Data_kNN) == "Current.health.expenditure..of.GDP"] <- "HE"
+colnames(Data_kNN)[colnames(Data_kNN) == "Foreign.direct.investment.net.BoP.current.USD"] <- "FDI"
+colnames(Data_kNN)[colnames(Data_kNN) == "GDP.current.USD"] <- "GDP"
+colnames(Data_kNN)[colnames(Data_kNN) == "GDP.per.capita.current.USD"] <- "GDPPC"
+colnames(Data_kNN)[colnames(Data_kNN) == "Individuals.using.the.Internet..of.population"] <- "IUI"
+colnames(Data_kNN)[colnames(Data_kNN) == "Inflation.GDP.deflator.annual."] <- "IGDA"
+colnames(Data_kNN)[colnames(Data_kNN) == "Labor.force.total"] <- "LF"
+colnames(Data_kNN)[colnames(Data_kNN) == "Life.expectancy.at.birth.total.years"] <- "LEAB"
+colnames(Data_kNN)[colnames(Data_kNN) == "Mortality.rate.infant.per.1000.live.births"] <- "MRI"
+colnames(Data_kNN)[colnames(Data_kNN) == "People.using.at.least.basic.drinking.water.services..of.population"] <- "BDWS"
+colnames(Data_kNN)[colnames(Data_kNN) == "Population.total"] <- "POP"
+colnames(Data_kNN)[colnames(Data_kNN) == "School.enrollment.primary..gross"] <- "SEP"
+colnames(Data_kNN)[colnames(Data_kNN) == "Suicide.mortality.rate.per.100000.population"] <- "SMR"
+}
 
 
 ####ACP####
