@@ -99,16 +99,12 @@ normalize_minmax <- function(x) {
 Data_kNN[, colunas_numericas] <- lapply(Data_kNN[, colunas_numericas], normalize_minmax)
 
 
-# Exibir o dataframe após a normalização
-print(Data_kNN)
-
-
 
 
 
 ####ACP####
 #Summary and covariance matrix
-AAA <- Data[,3:17]
+AAA <- Data_kNN[,3:17]
 summary(AAA)
 round(var(AAA),2)
 
@@ -124,8 +120,73 @@ par(oma = c(2, 2, 2, 2)) # space around for text
 corrplot.mixed(correlation, 
                order = "hclust", #order of variables
                tl.pos = "lt", #text left + top
-               upper = "ellipse")
+               upper = "ellipse",
+               tl.cex = 0.5)
 
+#Bartlett test - valor p baixo -> rejeita-se H0 -> há diferenças entre a matriz de correlação observada e a matriz de identidade 
+cortest.bartlett(correlation)
+
+#KMO - Overall e individual MSA com valores relativamente altos
+KMO(correlation)
+
+
+
+# PCA´s
+pc15 <- principal(AAA, nfactors=15, rotate="none", scores=TRUE) 
+
+#Eigenvalues - Variances of the principal components 
+round(pc15$values,3)
+#CRITÉRIO DE KAISER - reter os quatro primeiros componentes principais, já que são os únicos com valores maiores que 1
+
+#Screeplot - Find the elbow
+plot(pc15$values, type = "b", main = "Scree plot dos Dados", xlab = "Number of PC", ylab = "Eigenvalue")
+#De acordo com este gráfico, o "cotovelo" está no 3, por isso reter as 3 primeiras componentes principais
+
+#Olhar para a cumulative Var
+pc15$loadings
+
+#Com base nas Cumulative Var e no critério de Keiser, escolher PC4
+
+#Let's extract a 4 component solution
+pc4 <- principal(AAA, nfactors=4, rotate="none")
+pc4
+#Let's rotate the 4 components using varimax
+pc4r <- principal(AAA, nfactors=4, rotate="varimax")
+pc4r$loadings
+
+#Communalities
+round(pc4r$communality,4)
+
+
+
+#Escolher nomes para cada PCA
+
+
+
+#Compute the scores
+pc4sc <- principal(AAA, nfactors=4, rotate="none", scores=TRUE) 
+round(pc4sc$scores,4)
+
+#Add scores to the data set as new variables
+Data_kNN$pc1 <- pc4sc$scores[,1]
+Data_kNN$pc2 <- pc4sc$scores[,2]
+Data_kNN$pc3 <- pc4sc$scores[,3]
+Data_kNN$pc4 <- pc4sc$scores[,4]
+#Save the new data set in excel format
+setwd("C:\\2\\")
+write.xlsx(Data_kNN, file = "NewDecathlon.xlsx", 
+           sheetName = "PCAscores", col.names = TRUE, 
+           row.names = TRUE, append = FALSE)
+
+
+#Depict the scatterplot of PC1 vs PC2
+plot(Data_kNN$pc1, Data_kNN$pc2, pch = 19,xlim = c(-2,3),
+     ylim = c(-3,2), xlab="PC1", ylab="PC2", main = "Scores: PC1 vs Pc2")
+text(Data_kNN$pc1, Data_kNN$pc2-0.1, Data_kNN[,2]) #(x,y,labels)
+
+#Exemplo de correlação entre PC1 e uma variável qualquer
+#Compute correlation: Points vs PC1 
+#cor(Data_kNN$Points,Data_kNN$pc1)
 ####DESENVOLVIMENTO TIPOLOGIA####
 
 summary(Data)
