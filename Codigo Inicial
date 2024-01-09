@@ -5,7 +5,7 @@ library(mice)
 library(corrplot)
 library(VIM)
 
-Data = read.csv("C:\\Users\\pedro\\Documents\\ISCTE\\Mestrado\\Data Science\\Semestre 1\\Reconhecimento de Padrões\\Trabalho\\CSVPadroesv2.csv", header = TRUE)
+Data = read.csv("C:\\Users\\rafae\\Documents\\AulasS1\\Reconhecimento de padrões\\trabalho rp\\CSVPadroesv2.csv", header = TRUE)
 
 Data <- head(Data, -5)
 
@@ -45,21 +45,21 @@ Data <- Data %>%
 
 #Ajustar colunas para numeric 
 {
-Data$Adjusted.net.national.income.per.capita.current.USD <- as.numeric(Data$Adjusted.net.national.income.per.capita.current.USD)
-Data$Birth.rate.crude.per.1000.people <- as.numeric(Data$Birth.rate.crude.per.1000.people)
-Data$Current.health.expenditure..of.GDP <- as.numeric(Data$Current.health.expenditure..of.GDP)
-Data$Foreign.direct.investment.net.BoP.current.USD <- as.numeric(Data$Foreign.direct.investment.net.BoP.current.USD)
-Data$GDP.current.USD <- as.numeric(Data$GDP.current.USD)
-Data$GDP.per.capita.current.USD <- as.numeric(Data$GDP.per.capita.current.USD)
-Data$Individuals.using.the.Internet..of.population <- as.numeric(Data$Individuals.using.the.Internet..of.population)
-Data$Inflation.GDP.deflator.annual. <- as.numeric(Data$Inflation.GDP.deflator.annual.)
-Data$Labor.force.total <- as.numeric(Data$Labor.force.total)
-Data$Life.expectancy.at.birth.total.years <- as.numeric(Data$Life.expectancy.at.birth.total.years)
-Data$Mortality.rate.infant.per.1000.live.births <- as.numeric(Data$Mortality.rate.infant.per.1000.live.births)
-Data$People.using.at.least.basic.drinking.water.services..of.population <- as.numeric(Data$People.using.at.least.basic.drinking.water.services..of.population)
-Data$Population.total <- as.numeric(Data$Population.total)
-Data$School.enrollment.primary..gross <- as.numeric(Data$School.enrollment.primary..gross)
-Data$Suicide.mortality.rate.per.100000.population <- as.numeric(Data$Suicide.mortality.rate.per.100000.population)
+  Data$Adjusted.net.national.income.per.capita.current.USD <- as.numeric(Data$Adjusted.net.national.income.per.capita.current.USD)
+  Data$Birth.rate.crude.per.1000.people <- as.numeric(Data$Birth.rate.crude.per.1000.people)
+  Data$Current.health.expenditure..of.GDP <- as.numeric(Data$Current.health.expenditure..of.GDP)
+  Data$Foreign.direct.investment.net.BoP.current.USD <- as.numeric(Data$Foreign.direct.investment.net.BoP.current.USD)
+  Data$GDP.current.USD <- as.numeric(Data$GDP.current.USD)
+  Data$GDP.per.capita.current.USD <- as.numeric(Data$GDP.per.capita.current.USD)
+  Data$Individuals.using.the.Internet..of.population <- as.numeric(Data$Individuals.using.the.Internet..of.population)
+  Data$Inflation.GDP.deflator.annual. <- as.numeric(Data$Inflation.GDP.deflator.annual.)
+  Data$Labor.force.total <- as.numeric(Data$Labor.force.total)
+  Data$Life.expectancy.at.birth.total.years <- as.numeric(Data$Life.expectancy.at.birth.total.years)
+  Data$Mortality.rate.infant.per.1000.live.births <- as.numeric(Data$Mortality.rate.infant.per.1000.live.births)
+  Data$People.using.at.least.basic.drinking.water.services..of.population <- as.numeric(Data$People.using.at.least.basic.drinking.water.services..of.population)
+  Data$Population.total <- as.numeric(Data$Population.total)
+  Data$School.enrollment.primary..gross <- as.numeric(Data$School.enrollment.primary..gross)
+  Data$Suicide.mortality.rate.per.100000.population <- as.numeric(Data$Suicide.mortality.rate.per.100000.population)
   }
 # Conversão colunas de percentagem para decimais
 Data$Current.health.expenditure..of.GDP <- Data$Current.health.expenditure..of.GDP / 100
@@ -84,6 +84,29 @@ for (col in names(Data_kNN)) {
 }
 
 str(Data)
+
+#Voltar a realizar a imputação KNN para os outliers (??? - fiz isto apenas para poder testar a normalização)
+Data_kNN <- kNN(Data, k = 5, imp_var = FALSE)
+
+###Normalizar###
+# Identificar as colunas numéricas
+colunas_numericas <- sapply(Data_kNN, is.numeric)
+
+# Normalizar manualmente todas as colunas numéricas para o intervalo [0, 1] (método Min-Max)
+normalize_minmax <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+# Aplicar a função de normalização a todas as colunas numéricas
+Data_kNN[, colunas_numericas] <- lapply(Data_kNN[, colunas_numericas], normalize_minmax)
+
+
+# Exibir o dataframe após a normalização
+print(Data_kNN)
+
+
+
+
 
 ####ACP####
 #Summary and covariance matrix
