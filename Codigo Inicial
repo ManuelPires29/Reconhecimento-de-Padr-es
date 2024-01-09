@@ -4,6 +4,8 @@ library(dplyr)
 library(mice)
 library(corrplot)
 library(VIM)
+library(psych)
+library(xlsx)
 library(ggplot2)
 
 Data = read.csv("C:\\Users\\rafae\\Documents\\AulasS1\\Reconhecimento de padrões\\trabalho rp\\CSVPadroesv2.csv", header = TRUE)
