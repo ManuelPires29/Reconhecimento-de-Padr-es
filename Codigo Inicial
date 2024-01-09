@@ -66,26 +66,24 @@ Data$Current.health.expenditure..of.GDP <- Data$Current.health.expenditure..of.G
 Data$Individuals.using.the.Internet..of.population <- Data$Individuals.using.the.Internet..of.population / 100
 Data$People.using.at.least.basic.drinking.water.services..of.population <- Data$People.using.at.least.basic.drinking.water.services..of.population / 100
 
-# Realize a imputação KNN
-Data_kNN <- kNN(Data, k = 5, imp_var = FALSE)
 
 # Encontra os Outliers e substitui por NA
-for (col in names(Data_kNN)) {
-  if (is.numeric(Data_kNN[[col]])) {
-    quartiles <- quantile(Data_kNN[[col]], probs=c(.25, .75), na.rm = TRUE)
+for (col in names(Data)) {
+  if (is.numeric(Data[[col]])) {
+    quartiles <- quantile(Data[[col]], probs=c(.25, .75), na.rm = TRUE)
     
-    iQRange <- IQR(Data_kNN[[col]], na.rm = TRUE)
+    iQRange <- IQR(Data[[col]], na.rm = TRUE)
     lowerLimit <- quartiles[1] - 1.5 * iQRange
     upperLimit <- quartiles[2] + 1.5 * iQRange
     
     # Substituir outliers por NA diretamente na coluna existente
-    Data_kNN[[col]][Data_kNN[[col]] < lowerLimit | Data_kNN[[col]] > upperLimit] <- NA
+    Data[[col]][Data[[col]] < lowerLimit | Data[[col]] > upperLimit] <- NA
   }
 }
 
 str(Data)
 
-#Voltar a realizar a imputação KNN para os outliers (??? - fiz isto apenas para poder testar a normalização)
+#Realizar a imputação KNN 
 Data_kNN <- kNN(Data, k = 5, imp_var = FALSE)
 
 ###Normalizar###
