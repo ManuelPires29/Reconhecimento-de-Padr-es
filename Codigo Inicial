@@ -61,6 +61,10 @@ Data$Population.total <- as.numeric(Data$Population.total)
 Data$School.enrollment.primary..gross <- as.numeric(Data$School.enrollment.primary..gross)
 Data$Suicide.mortality.rate.per.100000.population <- as.numeric(Data$Suicide.mortality.rate.per.100000.population)
   }
+# Conversão colunas de percentagem para decimais
+Data$Current.health.expenditure..of.GDP <- Data$Current.health.expenditure..of.GDP / 100
+Data$Individuals.using.the.Internet..of.population <- Data$Individuals.using.the.Internet..of.population / 100
+Data$People.using.at.least.basic.drinking.water.services..of.population <- Data$People.using.at.least.basic.drinking.water.services..of.population / 100
 
 # Realize a imputação KNN
 Data_kNN <- kNN(Data, k = 5, imp_var = FALSE)
