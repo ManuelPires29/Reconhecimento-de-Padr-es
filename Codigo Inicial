@@ -4,6 +4,7 @@ library(dplyr)
 library(mice)
 library(corrplot)
 library(VIM)
+library(ggplot2)
 
 Data = read.csv("C:\\Users\\rafae\\Documents\\AulasS1\\Reconhecimento de padrões\\trabalho rp\\CSVPadroesv2.csv", header = TRUE)
 
@@ -27,6 +28,22 @@ prop_na <- colMeans(is.na(Data))
 print(prop_na)
 colunas_manter <- names(prop_na[prop_na <= 0.2])
 colunas_manter
+
+#df
+prop_na_df <- data.frame(
+  Variavel = names(prop_na),
+  Proporcao_NA = prop_na
+)
+prop_na_df <- prop_na_df %>%
+  slice(3:n())
+
+#Gráfico de barras para analisar NAs
+# Criar gráfico de barras
+ggplot(prop_na_df, aes(x = reorder(Variavel, Proporcao_NA), y = Proporcao_NA, fill = Variavel)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(Proporcao_NA, 2)), vjust = -0.5) +  # Adiciona texto com as proporções
+  labs(title = "Proporção de Valores Ausentes por Variável", x = "Variável", y = "Proporção de NA") +
+  theme_minimal()
 
 #Retira os indices com mais de 20% de nulos
 Data <- Data[colunas_manter]
@@ -136,6 +153,9 @@ round(var(AAA),2)
 
 #scatterplot
 pairs(AAA, pch = 19, lower.panel = NULL)
+
+# Adicionar uma legenda
+legend("bottomleft", legend = colnames(AAA), col = 1:ncol(AAA), pch = 19, title = "Variáveis")
 
 #correlation matrix
 correlation <- cor(AAA)
