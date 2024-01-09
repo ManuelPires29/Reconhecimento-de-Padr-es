@@ -45,7 +45,9 @@ ggplot(prop_na_df, aes(x = Variavel, y = Proporcao_NA, fill = Variavel)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = round(Proporcao_NA, 2)), vjust = -0.5) +  # Adiciona texto com as proporções
   labs(title = "Proporção de Valores Ausentes por Variável", x = "Variável", y = "Proporção de NA") +
-  theme_minimal()
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
+  guides(fill = FALSE)
 
 
 #Retira os indices com mais de 20% de nulos
@@ -67,7 +69,9 @@ ggplot(paises_excluir_df, aes(x = Pais, y = Percentagem, fill = Pais)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = round(Percentagem, 2)), vjust = -0.5) +  # Adiciona texto com as proporções
   labs(title = "Proporção de Valores Ausentes por País", x = "País", y = "Proporção de NA") +
-  theme_minimal()
+  theme_minimal()+
+  theme(axis.text.x = element_text(angle = 70, hjust = 1)) +
+  guides(fill = FALSE)
 
 
 #Retira os paises com mais de 20% de nulos
