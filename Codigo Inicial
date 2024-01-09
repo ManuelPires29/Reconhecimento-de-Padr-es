@@ -39,11 +39,12 @@ prop_na_df <- prop_na_df %>%
 
 #Gráfico de barras para analisar NAs
 # Criar gráfico de barras
-ggplot(prop_na_df, aes(x = reorder(Variavel, Proporcao_NA), y = Proporcao_NA, fill = Variavel)) +
+ggplot(prop_na_df, aes(x = Variavel, y = Proporcao_NA, fill = Variavel)) +
   geom_bar(stat = "identity") +
   geom_text(aes(label = round(Proporcao_NA, 2)), vjust = -0.5) +  # Adiciona texto com as proporções
   labs(title = "Proporção de Valores Ausentes por Variável", x = "Variável", y = "Proporção de NA") +
   theme_minimal()
+
 
 #Retira os indices com mais de 20% de nulos
 Data <- Data[colunas_manter]
