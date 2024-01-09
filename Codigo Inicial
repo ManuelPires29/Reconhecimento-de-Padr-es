@@ -57,6 +57,17 @@ paises_manter <- prop_na_lines_df %>%
   filter(Percentagem < 0.2) %>%
   pull(Pais)
 
+#Países a excluir
+paises_excluir_df <- prop_na_lines_df %>%
+  filter(Percentagem > 0.2)
+#Plot
+ggplot(paises_excluir_df, aes(x = Pais, y = Percentagem, fill = Pais)) +
+  geom_bar(stat = "identity") +
+  geom_text(aes(label = round(Percentagem, 2)), vjust = -0.5) +  # Adiciona texto com as proporções
+  labs(title = "Proporção de Valores Ausentes por País", x = "País", y = "Proporção de NA") +
+  theme_minimal()
+
+
 #Retira os paises com mais de 20% de nulos
 Data <- Data %>%
   filter(Country.Name %in% paises_manter)
