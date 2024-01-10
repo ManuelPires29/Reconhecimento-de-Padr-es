@@ -276,8 +276,14 @@ DataPCA<-Data_kNN[,c(2,18,19,20,21)] #componentes principais
 
 countries<- DataPCA[,1]
 DataPCA<- DataPCA[,-1]
-### Clustering Hierárquico ###
 
+
+
+
+
+
+
+### Clustering Hierárquico ###
 
 ##Método Ward 
 
