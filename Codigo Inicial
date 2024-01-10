@@ -130,7 +130,7 @@ Data$People.using.at.least.basic.drinking.water.services..of.population <- Data$
 Data$Birth.rate.crude.per.1000.people <- Data$Birth.rate.crude.per.1000.people / 1000
 Data$Mortality.rate.infant.per.1000.live.births <- Data$Mortality.rate.infant.per.1000.live.births / 1000
 Data$Suicide.mortality.rate.per.100000.population <- Data$Suicide.mortality.rate.per.100000.population / 100000
-
+Data$School.enrollment.primary..gross <- Data$School.enrollment.primary..gross / 100
 
 # Encontra os Outliers e substitui por NA
 for (col in names(Data)) {
