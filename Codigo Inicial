@@ -97,10 +97,6 @@ Data <- Data %>%
   Data$School.enrollment.primary..gross <- as.numeric(Data$School.enrollment.primary..gross)
   Data$Suicide.mortality.rate.per.100000.population <- as.numeric(Data$Suicide.mortality.rate.per.100000.population)
   }
-# Conversão colunas de percentagem para decimais
-Data$Current.health.expenditure..of.GDP <- Data$Current.health.expenditure..of.GDP / 100
-Data$Individuals.using.the.Internet..of.population <- Data$Individuals.using.the.Internet..of.population / 100
-Data$People.using.at.least.basic.drinking.water.services..of.population <- Data$People.using.at.least.basic.drinking.water.services..of.population / 100
 
 ### Análise exploratótia por variável
 #Summary
@@ -126,6 +122,12 @@ for (col in names(Data)) {
     boxplot(Data[[col]], main = paste("Boxplot de", col), col = "lightblue", horizontal = TRUE)
   }
 }
+
+# Conversão colunas de percentagem para decimais
+Data$Current.health.expenditure..of.GDP <- Data$Current.health.expenditure..of.GDP / 100
+Data$Individuals.using.the.Internet..of.population <- Data$Individuals.using.the.Internet..of.population / 100
+Data$People.using.at.least.basic.drinking.water.services..of.population <- Data$People.using.at.least.basic.drinking.water.services..of.population / 100
+
 
 # Encontra os Outliers e substitui por NA
 for (col in names(Data)) {
