@@ -102,6 +102,30 @@ Data$Current.health.expenditure..of.GDP <- Data$Current.health.expenditure..of.G
 Data$Individuals.using.the.Internet..of.population <- Data$Individuals.using.the.Internet..of.population / 100
 Data$People.using.at.least.basic.drinking.water.services..of.population <- Data$People.using.at.least.basic.drinking.water.services..of.population / 100
 
+### Análise exploratótia por variável
+#Summary
+summary(Data$Adjusted.net.national.income.per.capita.current.USD)
+summary(Data$Birth.rate.crude.per.1000.people)
+summary(Data$Current.health.expenditure..of.GDP)
+summary(Data$Foreign.direct.investment.net.BoP.current.USD)
+summary(Data$GDP.current.USD)
+summary(Data$GDP.per.capita.current.USD)
+summary(Data$Individuals.using.the.Internet..of.population)
+summary(Data$Inflation.GDP.deflator.annual.)
+summary(Data$Labor.force.total)
+summary(Data$Life.expectancy.at.birth.total.years)
+summary(Data$Mortality.rate.infant.per.1000.live.births)
+summary(Data$People.using.at.least.basic.drinking.water.services..of.population)
+summary(Data$Population.total)
+summary(Data$School.enrollment.primary..gross)
+summary(Data$Suicide.mortality.rate.per.100000.population)
+
+#Boxplots
+for (col in names(Data)) {
+  if (is.numeric(Data[[col]])) {
+    boxplot(Data[[col]], main = paste("Boxplot de", col), col = "lightblue", horizontal = TRUE)
+  }
+}
 
 # Encontra os Outliers e substitui por NA
 for (col in names(Data)) {
