@@ -5,8 +5,9 @@ library(mice)
 library(corrplot)
 library(VIM)
 library(psych)
-library(xlsx)
 library(ggplot2)
+library(cluster)
+library(mclust)
 
 Data = read.csv("C:\\Users\\rafae\\Documents\\AulasS1\\Reconhecimento de padrões\\trabalho rp\\CSVPadroesv2.csv", header = TRUE)
 
@@ -165,18 +166,18 @@ colnames(Data_kNN)[colnames(Data_kNN) == "Suicide.mortality.rate.per.100000.popu
 
 ####ACP####
 #Summary and covariance matrix
-AAA <- Data_kNN[,3:17]
-summary(AAA)
-round(var(AAA),2)
+Data_numeric <- Data_kNN[,3:17]
+summary(Data_numeric)
+round(var(Data_numeric),2)
 
 #scatterplot
-pairs(AAA, pch = 19, lower.panel = NULL)
+pairs(Data_numeric, pch = 19, lower.panel = NULL)
 
 # Adicionar uma legenda
-legend("bottomleft", legend = colnames(AAA), col = 1:ncol(AAA), pch = 19, title = "Variáveis")
+legend("bottomleft", legend = colnames(Data_numeric), col = 1:ncol(Data_numeric), pch = 19, title = "Variáveis")
 
 #correlation matrix
-correlation <- cor(AAA)
+correlation <- cor(Data_numeric)
 round(correlation,3)
 
 #corrplot
@@ -195,8 +196,16 @@ KMO(correlation)
 
 
 
-# PCA´s
-pc15 <- principal(AAA, nfactors=15, rotate="none", scores=TRUE) 
+
+
+
+#### PCA´s ####
+
+
+
+
+
+pc15 <- principal(Data_numeric, nfactors=15, rotate="none", scores=TRUE) 
 
 #Eigenvalues - Variances of the principal components 
 round(pc15$values,3)
@@ -212,10 +221,10 @@ pc15$loadings
 #Com base nas Cumulative Var e no critério de Keiser, escolher PC4
 
 #Let's extract a 4 component solution
-pc4 <- principal(AAA, nfactors=4, rotate="none")
+pc4 <- principal(Data_numeric, nfactors=4, rotate="none")
 pc4
 #Let's rotate the 4 components using varimax
-pc4r <- principal(AAA, nfactors=4, rotate="varimax")
+pc4r <- principal(Data_numeric, nfactors=4, rotate="varimax")
 pc4r$loadings
 
 #Communalities
@@ -228,30 +237,250 @@ round(pc4r$communality,4)
 
 
 #Compute the scores
-pc4sc <- principal(AAA, nfactors=4, rotate="none", scores=TRUE) 
+pc4sc <- principal(Data_numeric, nfactors=4, rotate="none", scores=TRUE) 
 round(pc4sc$scores,4)
 
 #Add scores to the data set as new variables
-Data_kNN$pc1 <- pc4sc$scores[,1]
-Data_kNN$pc2 <- pc4sc$scores[,2]
-Data_kNN$pc3 <- pc4sc$scores[,3]
-Data_kNN$pc4 <- pc4sc$scores[,4]
+Data_kNN$Progresso.Socioenonomico <- pc4sc$scores[,1]
+Data_kNN$Dinamica.Populacional.e.Mercado.de.Trabalho <- pc4sc$scores[,2]
+Data_kNN$Iniciativa.economica <- pc4sc$scores[,3]
+Data_kNN$Saude.mental.e.Educacao <- pc4sc$scores[,4]
+
 #Save the new data set in excel format
-setwd("C:\\2\\")
-write.xlsx(Data_kNN, file = "NewDecathlon.xlsx", 
-           sheetName = "PCAscores", col.names = TRUE, 
-           row.names = TRUE, append = FALSE)
+#setwd("C:\\2\\")
+#write.xlsx(Data_kNN, file = "NewDecathlon.xlsx", 
+           #sheetName = "PCAscores", col.names = TRUE, 
+           #row.names = TRUE, append = FALSE)
 
 
 #Depict the scatterplot of PC1 vs PC2
-plot(Data_kNN$pc1, Data_kNN$pc2, pch = 19,xlim = c(-2,3),
-     ylim = c(-3,2), xlab="PC1", ylab="PC2", main = "Scores: PC1 vs Pc2")
-text(Data_kNN$pc1, Data_kNN$pc2-0.1, Data_kNN[,2]) #(x,y,labels)
+#plot(Data_kNN$pc1, Data_kNN$pc2, pch = 19,xlim = c(-2,3),
+     #ylim = c(-3,2), xlab="PC1", ylab="PC2", main = "Scores: PC1 vs Pc2")
+#text(Data_kNN$pc1, Data_kNN$pc2-0.1, Data_kNN[,2]) #(x,y,labels)
 
 #Exemplo de correlação entre PC1 e uma variável qualquer
 #Compute correlation: Points vs PC1 
 #cor(Data_kNN$Points,Data_kNN$pc1)
-####DESENVOLVIMENTO TIPOLOGIA####
 
-summary(Data)
-str(Data)
+
+
+
+
+#### Clusters ####
+
+
+
+
+DataPCA<-Data_kNN[,c(2,18,19,20,21)] #componentes principais
+#profile<-df[,c(2,14)] #variaveis profile!!!!!!!
+
+countries<- DataPCA[,1]
+DataPCA<- DataPCA[,-1]
+### Clustering Hierárquico ###
+
+
+##Método Ward 
+
+demodist<-dist(DataPCA) #compute distance
+hclust_demow <- hclust(demodist,method='ward.D2')
+plot(hclust_demow,label = countries,hang=-1)
+
+
+#cortar o dendrograma em 4 clusters
+groups.k4<-cutree(hclust_demow, k=4) # cut tree into 4 clusters
+rect.hclust(hclust_demow, k=4, border="red") 
+aggregate(DataPCA,list(groups.k4), mean) #média de cada componente em cada um dos clusters
+table(groups.k4) #composição dos clusters
+
+
+#Silhouette
+plot(silhouette(groups.k4,demodist)) 
+#average silhouette 0.18, indica que não parece existir grande heterogeneidade
+#possivelmente os clusters vão estar muito sobrepostos
+
+
+#Utilizando 5 clusters
+#cortar o dendrograma em 5 clusters
+plot(hclust_demow,label = countries, hang=-1)
+groups.k5<-cutree(hclust_demow, k=5) 
+rect.hclust(hclust_demow, k=5, border="red") 
+aggregate(DataPCA,list(groups.k5), mean)
+table(groups.k5)
+
+#Silhouette
+plot(silhouette(groups.k5,demodist)) 
+#average silhouette 0.2
+
+
+
+## Método Complete Linkage
+
+hclust_democ<-hclust(demodist) #default method
+plot(hclust_democ,label = countries, hang=-1)
+#dificil visualizaçao devido ao comportamento em cadeia
+
+
+
+#utilizando o complete com 4 cluster
+#cortar o dendrograma em 4 clusters
+groups.k4c<-cutree(hclust_democ, k=4) # cut tree into 4 clusters
+rect.hclust(hclust_democ, k=4, border="red") 
+aggregate(DataPCA,list(groups.k4c), mean) #média de cada componente em cada um dos clusters
+table(groups.k4c) #composição dos clusters
+table(groups.k4,groups.k4c)
+
+
+#Silhouette
+plot(silhouette(groups.k4c,demodist)) 
+#average silhouette 0.14
+
+
+#cortar o dendrograma em 5 clusters
+groups.k5c<-cutree(hclust_democ, k=5) # cut tree into 4 clusters
+rect.hclust(hclust_democ, k=5, border="red") 
+aggregate(DataPCA,list(groups.k5c), mean) #média de cada componente em cada um dos clusters
+table(groups.k5c) #composição dos clusters
+table(groups.k5,groups.k5c)
+
+
+#Silhouette
+plot(silhouette(groups.k5c,demodist)) 
+#average silhouette 0.15
+
+#vamos assumir o método Ward que é por convençao o melhor
+
+#Tentou-se averiguar o porquê das diferenças entre o método Ward e o complete
+#tentar perceber que músicas ficam no cluster 4 e 5 do complete 
+
+dfc<-cbind(DataPCA, profile, groups.k5c)
+summary(dfc[1:4])
+
+dfc5<-subset(dfc, groups.k5c==5)
+summary(dfc5) #observaçoes que assumem valores altos das variaveis PC2, PC3 e PC4, mas baixos de PC1
+
+
+dfc4<-subset(dfc, groups.k5c==4)
+summary(dfc4) #parecem ser musicas que assumem valores altos da variavel PC4 (musicas mais provaveis de ser tocadas ao vivo)
+
+
+
+
+
+
+
+
+
+
+
+
+### Partitioning approach ###
+
+set.seed(444)
+#Scree plot
+wssplot <- function(xx, nc=15, seed=1234){
+  wss <- (nrow(DataPCA)-1)*sum(apply(DataPCA,2,var))
+  for (i in 2:nc){
+    set.seed(seed)
+    wss[i] <- sum(kmeans(xx, centers=i)$withinss)}
+  plot(1:nc, wss, type="b", xlab="Number of Clusters",
+       ylab="Within groups sum of squares")}
+wssplot(DataPCA, nc=10) 
+#parece indicar 5 cluster, o cotovelo parece estar no 5
+#vai ao encontro da opção anterior (Ward)
+
+
+# K-Means (com 4 clusters)
+kmeans.k4 <- kmeans(DataPCA, 4,nstart=100) 
+# k = 4 from hclust, nstart = initial random solutions
+attributes(kmeans.k4)  # all elements of the cluster output
+kmeans.k4$centers
+kmeans.k4$cluster
+kmeans.k4$size
+table(groups.k4,kmeans.k4$cluster)
+#Silhouette
+plot(silhouette(kmeans.k4$cluster,demodist))
+#0.24
+
+
+set.seed(444)
+# K-Means (com 5 clusters)
+kmeans.k5 <- kmeans(DataPCA, 5,nstart=100) 
+# k = 5 from hclust, nstart = initial random solutions
+attributes(kmeans.k5)  # all elements of the cluster output
+kmeans.k5$centers
+kmeans.k5$cluster
+kmeans.k5$size
+table(kmeans.k5$cluster)
+table(groups.k5,kmeans.k5$cluster)
+
+#Silhouette
+plot(silhouette(kmeans.k5$cluster,demodist))
+#0.25, weak structure
+#no entanto,podemos usar as variáveis profilling para perceber se a estrutura é artificial ou não
+#gráfico dos clusters
+pairs(DataPCA, col=c(1:5)[kmeans.k5$cluster], lower.panel = NULL)
+
+
+
+
+
+
+
+
+
+
+
+
+### PAM clustering ###
+#It is a robust version of k-means, which clusters data around the medoids
+
+
+set.seed(444)
+pam.k5 <- pam(DataPCA,5)
+pam.k5$medoids
+pam.k5$clustering
+table(kmeans.k5$cluster,pam.k5$clustering)
+plot(silhouette(pam.k5$clustering,demodist)) #0.2
+
+
+#gráfico dos clusters 
+pairs(DataPCA, col=c(1:5)[pam.k5$clustering], lower.panel = NULL)
+
+clusplot(pam.k5, labels = 5, col.p = pam.k5$clustering)
+
+
+
+
+
+
+
+
+
+### Gaussian mixture model (GMM) ###
+
+set.seed(444)
+# Apply GMM with 5 components
+results.k5 <- Mclust(DataPCA, G = 5)
+results.k5$modelName
+results.k5$classification
+table(results.k5$classification)
+summary(results.k5, parameters = TRUE)
+table(results.k5$classification,kmeans.k5$cluster) 
+pairs(DataPCA, col=c(1:5)[results.k5$classification], lower.panel = NULL)
+
+
+results.k5 <- Mclust(DataPCA, G = 5)
+plot(results.k5, what = "density")
+plot(results.k5, what = "uncertainty")
+
+# Model selection
+BIC <- mclustBIC(DataPCA)
+plot(BIC)
+# Model estimation
+results <- Mclust(DataPCA, x = BIC)
+summary(results, parameters = TRUE)
+
+
+plot(results, what = "classification")
+table(class, results$classification)
+plot(results, what = "uncertainty")
