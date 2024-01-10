@@ -1,0 +1,204 @@
+﻿Country.Name,Continent,Predominant.Religion,Language,World Climate Data
+Algeria,Africa,Islamic,Arabic,BWH
+Angola,Africa,Christianity,Portuguese,AW
+Benin,Africa,Christianity,French,AW
+Botswana,Africa,Christianity,English,BSH
+Burkina Faso,Africa,Islamic,French,BSH
+Burundi,Africa,Christianity,French,CWB
+Cabo Verde,Africa,Christianity,Portuguese,BWH
+Cameroon,Africa,Christianity,French,AW
+Central African Republic,Africa,Christianity,French,AW
+Chad,Africa,Islamic,Arabic,CFA
+Comoros,Africa,Islamic,Comorian,AF
+"Congo, Dem. Rep.",Africa,Christianity,French,AM
+"Congo, Rep.",Africa,Christianity,French,AM
+Cote d'Ivoire,Africa,Islamic,French,AW
+Djibouti,Africa,Islamic,French,BWH
+"Egypt, Arab Rep.",Africa,Islamic,Arabic,BWH
+Equatorial Guinea,Africa,Christianity,French,AM
+Eswatini,Africa,Christianity,English,CWA
+Ethiopia,Africa,Christianity,Oromo,BSH
+Gabon,Africa,Christianity,French,AW
+"Gambia, The",Africa,Islamic,English,AW
+Ghana,Africa,Christianity,English,AW
+Guinea,Africa,Islamic,French,AW
+Guinea-Bissau,Africa,Islamic,Portuguese,AW
+Kenya,Africa,Christianity,Swahili,AW
+Lesotho,Africa,Christianity,Sotho,CWB
+Liberia,Africa,Christianity,English,AM
+Libya,Africa,Islamic,Arabic,BWH
+Madagascar,Africa,Christianity,Malagasy,CWB
+Malawi,Africa,Christianity,Chichewa,AW
+Mali,Africa,Islamic,French,BWH
+Mauritania,Africa,Islamic,Arabic,BWH
+Mauritius,Africa,Hinduism,English,AM
+Morocco,Africa,Islamic,Arabic,BSH
+Mozambique,Africa,Christianity,Portuguese,AW
+Namibia,Africa,Christianity,English,BWH
+Niger,Africa,Islamic,French,BWH
+Nigeria,Africa,Islamic,English,AW
+Rwanda,Africa,Christianity,English,CFB
+Sao Tome and Principe,Africa,Christianity,Portuguese,AS
+Senegal,Africa,Islamic,French,BSH
+Seychelles,Africa,Christianity,English,AF
+Sierra Leone,Africa,Islamic,English,AM
+Somalia,Africa,Islamic,Somali,BWH
+South Africa,Africa,Christianity,English,BWK
+South Sudan,Africa,Christianity,English,AW
+Sudan,Africa,Islamic,Arabic,BSH
+Tanzania,Africa,Christianity,Swahili,BSH
+Togo,Africa,Christianity,French,CFA
+Tunisia,Africa,Islamic,Arabic,BWH
+Uganda,Africa,Christianity,Swahili,AM
+Zambia,Africa,Christianity,English,CWA
+Zimbabwe,Africa,Christianity,English,BSH
+Afghanistan,Asia,Islamic,Pashto,"DSB	"
+Armenia,Asia,Christianity,Armenian,DFB
+Azerbaijan,Asia,Islamic,Azerbaijani,BSK
+Bahrain,Asia,Islamic,Arabic,BWH
+Bangladesh,Asia,Islamic,Bengali,AW
+Bhutan,Asia,Buddhism,Dzongkha,CWB
+Brunei Darussalam,Asia,Islamic,Malay,AF
+Cambodia,Asia,Buddhism,Khmer,AM
+China,Asia,Irreligion ,Mandarin,BSK
+Georgia,Asia,Christianity,Georgian,CFA
+India,Asia,Hinduism,Hindi,AW
+Indonesia,Asia,Islamic,Indonesian,AF
+"Iran, Islamic Rep.",Asia,Islamic,Persian,BWK
+Iraq,Asia,Islamic,Arabic,BWH
+Israel,Asia,Judaism,Hebrew,BSH
+Japan,Asia,Irreligion ,Japanese,DFB
+Jordan,Asia,Islamic,Arabic,CFA
+Kazakhstan,Asia,Islamic,Kazakh,BSK
+"Korea, Rep.",Asia,Irreligion ,Korean,DWB
+Kuwait,Asia,Islamic,Arabic,BWH
+Kyrgyz Republic,Asia,Islamic,Kyrgyz,DFB
+Lao PDR,Asia,Buddhism,Lao,CWA
+Lebanon,Asia,Islamic,Arabic,CSA
+Malaysia,Asia,Islamic,Malay,AF
+Maldives,Asia,Buddhism,Dhivehi,AM
+Mongolia,Asia,Buddhism,Mongolian,BSK
+Myanmar,Asia,Buddhism,Burmese,AW
+Nepal,Asia,Hinduism,Nepali,CWB
+Oman,Asia,Islamic,Arabic,BWH
+Pakistan,Asia,Islamic,Urdu,BWH
+Philippines,Asia,Christianity,Filipino,AF
+Qatar,Asia,Islamic,Arabic,BWH
+Saudi Arabia,Asia,Islamic,Arabic,BWH
+Singapore,Asia,Buddhism,Malay,AF
+Sri Lanka,Asia,Buddhism,Sinhala,AF
+Syrian Arab Republic,Asia,Islamic,Arabic,BWH
+Tajikistan,Asia,Islamic,Tajik,DSC
+Thailand,Asia,Buddhism,Thai,AW
+Timor-Leste,Asia,Christianity,Portuguese,AW
+Turkiye,Asia,Islamic,Turkish,CSB
+Turkmenistan,Asia,Islamic,Turkmen,BSK
+United Arab Emirates,Asia,Islamic,Arabic,BWH
+Uzbekistan,Asia,Islamic,Uzbek,BWK
+Viet Nam,Asia,Irreligion ,Vietnamese,CWA
+West Bank and Gaza,Asia,Judaism,Hebrew,BSH
+"Yemen, Rep.",Asia,Islamic,Arabic,BWH
+Albania,Europe,Islamic,Albanian,CSB
+Austria,Europe,Christianity,German,DFB
+Belarus,Europe,Christianity,Belarusian,DFB
+Belgium,Europe,Christianity,Dutch,CFB
+Belize,North America,Christianity,English,AM
+Bosnia and Herzegovina,Europe,Islamic,Bosnian,DFB
+Bulgaria,Europe,Christianity,Bulgarian,DFB
+Croatia,Europe,Christianity,Croatian,CFB
+Cyprus,Europe,Christianity,Greek,BSH
+Czechia,Europe,Irreligion ,Czech,CFB
+Denmark,Europe,Christianity,Danish,CFB
+Ecuador,Europe,Christianity,Spanish,CFB
+Estonia,Europe,Irreligion ,Estonian,DFB
+Finland,Europe,Christianity,Finnish,DFC
+France,Europe,Irreligion ,French,CFB
+Germany,Europe,Irreligion ,German,CFB
+Greece,Europe,Christianity,Greek,CSA
+Hungary,Europe,Christianity,Hungarian,CFB
+Iceland,Europe,Christianity,Icelandic,ET
+Ireland,Europe,Christianity,English,CFB
+Italy,Europe,Christianity,Italian,CSA
+Latvia,Europe,Christianity,Latvian,DFB
+Lithuania,Europe,Christianity,Lithuanian,DFB
+Luxembourg,Europe,Christianity,Luxembourgish,CFB
+Malta,Europe,Christianity,Maltese,CSA
+Moldova,Europe,Christianity,Romanian,DFB
+Montenegro,Europe,Christianity,Montenegrin,CFB
+Netherlands,Europe,Irreligion ,Dutch,CFB
+North Macedonia,Europe,Christianity,Macedonian,CFB
+Norway,Europe,Christianity,Norwegian,DFC
+Panama,North America,Christianity,Spanish,AM
+Poland,Europe,Christianity,Polish,CFB
+Portugal,Europe,Christianity,Portuguese,CSA
+Romania,Europe,Christianity,Romanian,DFB
+Russian Federation,Europe,Christianity,Russian,DFC
+Serbia,Europe,Christianity,Serbian,CFB
+Slovak Republic,Europe,Christianity,Slovak,DFB
+Slovenia,Europe,Christianity,Slovene,CFB
+Spain,Europe,Christianity,Spanish,CSA
+Sweden,Europe,Christianity,Swedish,DFB
+Switzerland,Europe,Christianity,German,DFC
+Ukraine,Europe,Christianity,Ukrainian,DFB
+United Kingdom,Europe,Irreligion ,English,CFB
+Antigua and Barbuda,North America,Christianity,English,AF
+"Bahamas, The",North America,Christianity,English,AW
+Barbados,North America,Christianity,English,AM
+Canada,North America,Christianity,English,DFC
+Costa Rica,North America,Christianity,Spanish,CFB
+Cuba,North America,Christianity,Spanish,AW
+Dominica,North America,Christianity,English,AF
+Dominican Republic,North America,Christianity,Spanish,AF
+El Salvador,North America,Christianity,Spanish,AW
+Grenada,North America,Christianity,English,AW
+Guatemala,North America,Christianity,Spanish,AM
+Haiti,North America,Christianity,French,AW
+Honduras,North America,Christianity,Spanish,AM
+Jamaica,North America,Christianity,English,AW
+Mexico,North America,Christianity,Spanish,BSK
+Nicaragua,North America,Christianity,Spanish,AM
+St. Kitts and Nevis,North America,Christianity,English,AW
+St. Lucia,North America,Christianity,English,AF
+St. Vincent and the Grenadines,North America,Christianity,English,AF
+Trinidad and Tobago,North America,Christianity,English,AM
+United States,North America,Christianity,English,CFA
+Australia,Oceania,Christianity,English,BWH
+Fiji,Oceania,Christianity,English,AF
+Kiribati,Oceania,Christianity,Gilbertese,AF
+Marshall Islands,Oceania,Christianity,English,AF
+"Micronesia, Fed. Sts.",Oceania,Christianity,English,AF
+New Zealand,Oceania,Irreligion ,English,CFB
+Papua New Guinea,Oceania,Christianity,English,AF
+Samoa,Oceania,Christianity,Samoan,AW
+Solomon Islands,Oceania,Christianity,English,AF
+Tonga,Oceania,Christianity,Tongan,AF
+Vanuatu,Oceania,Christianity,Bislama,AF
+Argentina,South America,Christianity,Spanish,CFA
+Bolivia,South America,Christianity,Spanish,AW
+Brazil,South America,Christianity,Portuguese,AW
+Chile,South America,Christianity,Spanish,CSB
+Colombia,South America,Christianity,Spanish,CFB
+Guyana,South America,Christianity,English,AF
+Paraguay,South America,Christianity,Spanish,AW
+Peru,South America,Christianity,Spanish,AF
+Suriname,South America,Christianity,Dutch,AF
+Uruguay,South America,Christianity,Spanish,CFA
+,,,,
+"BWH - Hot desert climate
+AW - Tropical wet and dry or savanna climate
+BSH - Hot semi-arid climate
+CWB - Subtropical highland climate with dry winters
+CFA - Humid subtropical climate with dry winters
+AF - Tropical rainforest climate
+AM - Monsoon climate
+CWA - Tropical savanna climate with dry winters
+BSK - Cold semi-arid climate
+AS - Tropical wet and dry or savanna climate (seasonal)
+CFB - Oceanic climate with dry winters
+CSA - Mediterranean climate
+DSB - Cold desert climate
+DFB - Humid continental climate with dry winters
+DWB - Dry winter continental or hemiboreal climate
+CSB - Mediterranean climate with dry summers
+ET - Tundra climate
+DFC - Subarctic climate with dry winters",,,,
