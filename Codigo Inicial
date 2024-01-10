@@ -127,6 +127,9 @@ for (col in names(Data)) {
 Data$Current.health.expenditure..of.GDP <- Data$Current.health.expenditure..of.GDP / 100
 Data$Individuals.using.the.Internet..of.population <- Data$Individuals.using.the.Internet..of.population / 100
 Data$People.using.at.least.basic.drinking.water.services..of.population <- Data$People.using.at.least.basic.drinking.water.services..of.population / 100
+Data$Birth.rate.crude.per.1000.people <- Data$Birth.rate.crude.per.1000.people / 1000
+Data$Mortality.rate.infant.per.1000.live.births <- Data$Mortality.rate.infant.per.1000.live.births / 1000
+Data$Suicide.mortality.rate.per.100000.population <- Data$Suicide.mortality.rate.per.100000.population / 100000
 
 
 # Encontra os Outliers e substitui por NA
