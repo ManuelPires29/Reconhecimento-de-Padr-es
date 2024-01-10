@@ -305,7 +305,7 @@ Data_kNN <- merge(Data_kNN, Profile, by = "Country.Name", all.x = TRUE)
 
 
 DataPCA<-Data_kNN[,c(2,18,19,20,21)] #componentes principais
-#profile<-df[,c(2,14)] #variaveis profile!!!!!!!
+DataProfile<-Data_kNN[,c(22,23,24,25)] #variaveis profile
 
 countries<- DataPCA[,1]
 DataPCA<- DataPCA[,-1]
