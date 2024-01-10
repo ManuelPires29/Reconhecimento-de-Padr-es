@@ -9,7 +9,7 @@ library(ggplot2)
 library(cluster)
 library(mclust)
 
-Data = read.csv("C:\\Users\\rafae\\Documents\\AulasS1\\Reconhecimento de padrões\\trabalho rp\\CSVPadroesv2.csv", header = TRUE)
+Data <- read.csv("CSVPadroesv2.csv", sep = ",", dec = ".", header = T)
 
 Data <- head(Data, -5)
 
