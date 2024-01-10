@@ -523,3 +523,6 @@ summary(results, parameters = TRUE)
 plot(results, what = "classification")
 table(class, results$classification)
 plot(results, what = "uncertainty")
+
+
+result <- aggregate(DataPCA, list(kmeans.k4$cluster), mean)
