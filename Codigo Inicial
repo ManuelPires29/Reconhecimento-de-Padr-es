@@ -297,7 +297,11 @@ Data_kNN$Saude.mental.e.Educacao <- pc4sc$scores[,4]
 
 #### Clusters ####
 
+#add variáveis perfil
+Profile <- read.csv("PerfilCountry.csv", sep = ",", dec = ".", header = T)
 
+#Juntar as variáveis profile ao data frame 
+Data_kNN <- merge(Data_kNN, Profile, by = "Country.Name", all.x = TRUE)
 
 
 DataPCA<-Data_kNN[,c(2,18,19,20,21)] #componentes principais
