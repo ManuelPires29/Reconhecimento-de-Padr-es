@@ -297,18 +297,18 @@ Data_kNN$Saude.mental.e.Educacao <- pc4sc$scores[,4]
 
 #### Clusters ####
 
-#add variáveis perfil
+#Adicionar variáveis perfil
 Profile <- read.csv("PerfilCountry.csv", sep = ",", dec = ".", header = T)
 
-#Juntar as variáveis profile ao data frame 
+#Juntar as variáveis perfil ao data frame 
 Data_kNN <- merge(Data_kNN, Profile, by = "Country.Name", all.x = TRUE)
 
-
+#Criar dataframe com as componentes principais e os nomes dos países
 DataPCA<-Data_kNN[,c(2,18,19,20,21)] #componentes principais
 DataProfile<-Data_kNN[,c(22,23,24,25)] #variaveis profile
 
-countries<- DataPCA[,1]
-DataPCA<- DataPCA[,-1]
+countries<- DataPCA[,1] # Criar dataframe com apenas os nomes dos países, pode ser útil para representar gráficos
+DataPCA<- DataPCA[,-1] # retirar o nome dos países do dataframe
 
 
 
@@ -318,88 +318,75 @@ DataPCA<- DataPCA[,-1]
 
 ### Clustering Hierárquico ###
 
-##Método Ward 
 
-demodist<-dist(DataPCA) #compute distance
+
+##Método Ward 
+demodist<-dist(DataPCA)
 hclust_demow <- hclust(demodist,method='ward.D2')
 plot(hclust_demow,label = countries,hang=-1)
 
-
-#cortar o dendrograma em 4 clusters
-groups.k4<-cutree(hclust_demow, k=4) # cut tree into 4 clusters
+#Cortar o dendrograma em 4 clusters - método ward
+groups.k4<-cutree(hclust_demow, k=4) 
 rect.hclust(hclust_demow, k=4, border="red") 
-aggregate(DataPCA,list(groups.k4), mean) #média de cada componente em cada um dos clusters
-table(groups.k4) #composição dos clusters
-
-
+aggregate(DataPCA,list(groups.k4), mean)
+table(groups.k4)
 #Silhouette
 plot(silhouette(groups.k4,demodist)) 
-#average silhouette 0.18, indica que não parece existir grande heterogeneidade
-#possivelmente os clusters vão estar muito sobrepostos
+#average silhouette 0.18
 
-
-#Utilizando 5 clusters
-#cortar o dendrograma em 5 clusters
+#Cortar o dendrograma em 5 clusters - método ward
 plot(hclust_demow,label = countries, hang=-1)
 groups.k5<-cutree(hclust_demow, k=5) 
 rect.hclust(hclust_demow, k=5, border="red") 
 aggregate(DataPCA,list(groups.k5), mean)
 table(groups.k5)
-
 #Silhouette
 plot(silhouette(groups.k5,demodist)) 
-#average silhouette 0.2
+#average silhouette 0.20
 
 
 
-## Método Complete Linkage
-
-hclust_democ<-hclust(demodist) #default method
+##Método Complete Linkage
+hclust_democ<-hclust(demodist)
 plot(hclust_democ,label = countries, hang=-1)
-#dificil visualizaçao devido ao comportamento em cadeia
 
-
-
-#utilizando o complete com 4 cluster
-#cortar o dendrograma em 4 clusters
-groups.k4c<-cutree(hclust_democ, k=4) # cut tree into 4 clusters
+#Cortar o dendrograma em 4 clusters - método complete linkage
+groups.k4c<-cutree(hclust_democ, k=4)
 rect.hclust(hclust_democ, k=4, border="red") 
-aggregate(DataPCA,list(groups.k4c), mean) #média de cada componente em cada um dos clusters
-table(groups.k4c) #composição dos clusters
+aggregate(DataPCA,list(groups.k4c), mean)
+table(groups.k4c)
 table(groups.k4,groups.k4c)
-
-
 #Silhouette
 plot(silhouette(groups.k4c,demodist)) 
 #average silhouette 0.14
 
-
-#cortar o dendrograma em 5 clusters
-groups.k5c<-cutree(hclust_democ, k=5) # cut tree into 4 clusters
+#Cortar o dendrograma em 5 clusters - método complete linkage
+groups.k5c<-cutree(hclust_democ, k=5)
 rect.hclust(hclust_democ, k=5, border="red") 
-aggregate(DataPCA,list(groups.k5c), mean) #média de cada componente em cada um dos clusters
+aggregate(DataPCA,list(groups.k5c), mean)
 table(groups.k5c) #composição dos clusters
 table(groups.k5,groups.k5c)
-
-
 #Silhouette
 plot(silhouette(groups.k5c,demodist)) 
 #average silhouette 0.15
 
-#vamos assumir o método Ward que é por convençao o melhor
+
+#Os valores da Silhouette obtidos indicam que o método Ward é melhor
+
+
+#Acho que as próximas 8 linhas não são úteis 
 
 #Tentou-se averiguar o porquê das diferenças entre o método Ward e o complete
 #tentar perceber que músicas ficam no cluster 4 e 5 do complete 
 
-dfc<-cbind(DataPCA, profile, groups.k5c)
-summary(dfc[1:4])
+#dfc<-cbind(DataPCA, profile, groups.k5c)
+#summary(dfc[1:4])
 
-dfc5<-subset(dfc, groups.k5c==5)
-summary(dfc5) #observaçoes que assumem valores altos das variaveis PC2, PC3 e PC4, mas baixos de PC1
+#dfc5<-subset(dfc, groups.k5c==5)
+#summary(dfc5) #observaçoes que assumem valores altos das variaveis PC2, PC3 e PC4, mas baixos de PC1
 
-
-dfc4<-subset(dfc, groups.k5c==4)
-summary(dfc4) #parecem ser musicas que assumem valores altos da variavel PC4 (musicas mais provaveis de ser tocadas ao vivo)
+#dfc4<-subset(dfc, groups.k5c==4)
+#summary(dfc4) #parecem ser musicas que assumem valores altos da variavel PC4 (musicas mais provaveis de ser tocadas ao vivo)
 
 
 
@@ -414,8 +401,9 @@ summary(dfc4) #parecem ser musicas que assumem valores altos da variavel PC4 (mu
 
 ### Partitioning approach ###
 
-set.seed(444)
-#Scree plot
+
+## Scree plot - método "cotovelo"
+set.seed(123)
 wssplot <- function(xx, nc=15, seed=1234){
   wss <- (nrow(DataPCA)-1)*sum(apply(DataPCA,2,var))
   for (i in 2:nc){
@@ -425,38 +413,35 @@ wssplot <- function(xx, nc=15, seed=1234){
        ylab="Within groups sum of squares")}
 wssplot(DataPCA, nc=10) 
 #parece indicar 5 cluster, o cotovelo parece estar no 5
-#vai ao encontro da opção anterior (Ward)
+#vai ao encontro da opção anterior do método Ward, comparando os valores das Silhouettes
 
 
-# K-Means (com 4 clusters)
+## K-Means (com 4 clusters)
 kmeans.k4 <- kmeans(DataPCA, 4,nstart=100) 
-# k = 4 from hclust, nstart = initial random solutions
-attributes(kmeans.k4)  # all elements of the cluster output
+attributes(kmeans.k4)
 kmeans.k4$centers
 kmeans.k4$cluster
 kmeans.k4$size
 table(groups.k4,kmeans.k4$cluster)
 #Silhouette
 plot(silhouette(kmeans.k4$cluster,demodist))
-#0.24
+#Silhouette = 0.24
 
 
-set.seed(444)
 # K-Means (com 5 clusters)
 kmeans.k5 <- kmeans(DataPCA, 5,nstart=100) 
-# k = 5 from hclust, nstart = initial random solutions
-attributes(kmeans.k5)  # all elements of the cluster output
+attributes(kmeans.k5)
 kmeans.k5$centers
 kmeans.k5$cluster
 kmeans.k5$size
 table(kmeans.k5$cluster)
 table(groups.k5,kmeans.k5$cluster)
-
 #Silhouette
 plot(silhouette(kmeans.k5$cluster,demodist))
-#0.25, weak structure
-#no entanto,podemos usar as variáveis profilling para perceber se a estrutura é artificial ou não
-#gráfico dos clusters
+#Silhouette = 0.25, melhor valor que obtivemos
+#Ainda assim, este valor indica estrutura fraca, mas podemos usar as variáveis profilling para perceber se a estrutura é artificial ou não
+
+#Acho que estes gráficos não são úteis
 pairs(DataPCA, col=c(1:5)[kmeans.k5$cluster], lower.panel = NULL)
 
 
@@ -471,22 +456,19 @@ pairs(DataPCA, col=c(1:5)[kmeans.k5$cluster], lower.panel = NULL)
 
 
 ### PAM clustering ###
-#It is a robust version of k-means, which clusters data around the medoids
+#É uma versão robusta do k-means, que agrupa os dados em torno dos medoides.
 
-
-set.seed(444)
+set.seed(123)
 pam.k5 <- pam(DataPCA,5)
 pam.k5$medoids
 pam.k5$clustering
 table(kmeans.k5$cluster,pam.k5$clustering)
-plot(silhouette(pam.k5$clustering,demodist)) #0.2
+plot(silhouette(pam.k5$clustering,demodist)) 
+# Silhouette = 0.2
 
-
-#gráfico dos clusters 
+#Acho que estes gráficos não são úteis
 pairs(DataPCA, col=c(1:5)[pam.k5$clustering], lower.panel = NULL)
-
 clusplot(pam.k5, labels = 5, col.p = pam.k5$clustering)
-
 
 
 
@@ -497,32 +479,56 @@ clusplot(pam.k5, labels = 5, col.p = pam.k5$clustering)
 
 ### Gaussian mixture model (GMM) ###
 
-set.seed(444)
-# Apply GMM with 5 components
+set.seed(123)
+# Aplicar GMM com 5 componentes do método k-means, porque foi o que obteu um valor de silhouette mais elevado(0,25)
 results.k5 <- Mclust(DataPCA, G = 5)
 results.k5$modelName
 results.k5$classification
 table(results.k5$classification)
-summary(results.k5, parameters = TRUE)
+summary(results.k5, parameters = TRUE) #interpretar os valores log-likelihood, BIC e ICL
 table(results.k5$classification,kmeans.k5$cluster) 
 pairs(DataPCA, col=c(1:5)[results.k5$classification], lower.panel = NULL)
-
-
 results.k5 <- Mclust(DataPCA, G = 5)
 plot(results.k5, what = "density")
 plot(results.k5, what = "uncertainty")
 
-# Model selection
+
+# Número ótimo de componentes
 BIC <- mclustBIC(DataPCA)
 plot(BIC)
-# Model estimation
 results <- Mclust(DataPCA, x = BIC)
-summary(results, parameters = TRUE)
+summary(results, parameters = TRUE) #Conclui-se que o númnero ótimo de componentes é 3
 
-
+#Acho que estes gráficos não são úteis
 plot(results, what = "classification")
 table(class, results$classification)
 plot(results, what = "uncertainty")
 
 
-result <- aggregate(DataPCA, list(kmeans.k4$cluster), mean)
+
+
+#Como o número ótimo de componentes é 3, vai-se fazer o método k-means com 3 componentes
+
+#Método Ward para 3 clusters
+groups.k3<-cutree(hclust_demow, k=3) # cut tree into 4 clusters
+rect.hclust(hclust_demow, k=3, border="red") 
+aggregate(DataPCA,list(groups.k3), mean) #média de cada componente em cada um dos clusters
+table(groups.k3) #composição dos clusters
+
+#Método k-means para 3 clusters
+kmeans.k3 <- kmeans(DataPCA, 3,nstart=100) 
+attributes(kmeans.k3)
+kmeans.k3$centers
+kmeans.k3$cluster
+kmeans.k3$size
+table(groups.k3,kmeans.k3$cluster)
+#Silhouette
+plot(silhouette(kmeans.k3$cluster,demodist))
+# Sillhouete = 0.23, o que significa que perdeu eficácia relativamente ao melhor método(k-means com 5 componentes),
+# mas em retorno ganhou simplicidade, porque passou de 5 componentes para apenas 3
+
+
+
+
+### Tabela final ###
+result <- aggregate(DataPCA, list(kmeans.k3$cluster), mean)
