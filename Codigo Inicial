@@ -276,22 +276,6 @@ Data_kNN$Dinamica.Populacional.e.Mercado.de.Trabalho <- pc4sc$scores[,2]
 Data_kNN$Iniciativa.economica <- pc4sc$scores[,3]
 Data_kNN$Saude.mental.e.Educacao <- pc4sc$scores[,4]
 
-#Save the new data set in excel format
-#setwd("C:\\2\\")
-#write.xlsx(Data_kNN, file = "NewDecathlon.xlsx", 
-           #sheetName = "PCAscores", col.names = TRUE, 
-           #row.names = TRUE, append = FALSE)
-
-
-#Depict the scatterplot of PC1 vs PC2
-#plot(Data_kNN$pc1, Data_kNN$pc2, pch = 19,xlim = c(-2,3),
-     #ylim = c(-3,2), xlab="PC1", ylab="PC2", main = "Scores: PC1 vs Pc2")
-#text(Data_kNN$pc1, Data_kNN$pc2-0.1, Data_kNN[,2]) #(x,y,labels)
-
-#Exemplo de correlação entre PC1 e uma variável qualquer
-#Compute correlation: Points vs PC1 
-#cor(Data_kNN$Points,Data_kNN$pc1)
-
 
 
 
@@ -375,26 +359,6 @@ plot(silhouette(groups.k5c,demodist))
 #Os valores da Silhouette obtidos indicam que o método Ward é melhor
 
 
-#Acho que as próximas 8 linhas não são úteis 
-
-#Tentou-se averiguar o porquê das diferenças entre o método Ward e o complete
-#tentar perceber que músicas ficam no cluster 4 e 5 do complete 
-
-#dfc<-cbind(DataPCA, profile, groups.k5c)
-#summary(dfc[1:4])
-
-#dfc5<-subset(dfc, groups.k5c==5)
-#summary(dfc5) #observaçoes que assumem valores altos das variaveis PC2, PC3 e PC4, mas baixos de PC1
-
-#dfc4<-subset(dfc, groups.k5c==4)
-#summary(dfc4) #parecem ser musicas que assumem valores altos da variavel PC4 (musicas mais provaveis de ser tocadas ao vivo)
-
-
-
-
-
-
-
 
 
 
@@ -413,8 +377,11 @@ wssplot <- function(xx, nc=15, seed=1234){
   plot(1:nc, wss, type="b", xlab="Number of Clusters",
        ylab="Within groups sum of squares")}
 wssplot(DataPCA, nc=10) 
-#parece indicar 5 cluster, o cotovelo parece estar no 5
-#vai ao encontro da opção anterior do método Ward, comparando os valores das Silhouettes
+#Não é possível concluir nada
+
+#Gráfico com a melhor silhouette por número de cluster
+set.seed(123)
+fviz_nbclust(DataPCA,kmeans, method = "silhouette") # 4 ou 5 clusters
 
 
 ## K-Means (com 4 clusters)
@@ -440,27 +407,29 @@ table(groups.k5,kmeans.k5$cluster)
 #Silhouette
 plot(silhouette(kmeans.k5$cluster,demodist))
 #Silhouette = 0.25, melhor valor que obtivemos
-#Ainda assim, este valor indica estrutura fraca, mas podemos usar as variáveis profilling para perceber se a estrutura é artificial ou não
 
-#Acho que estes gráficos não são úteis
-pairs(DataPCA, col=c(1:5)[kmeans.k5$cluster], lower.panel = NULL)
 
 
 ## PAM clustering
 #É uma versão robusta do k-means, que agrupa os dados em torno dos medoides.
 
+#PAM para 4 clusters
+set.seed(123)
+pam.k4 <- pam(DataPCA,4)
+pam.k4$medoids
+pam.k4$clustering
+table(kmeans.k4$cluster,pam.k4$clustering)
+plot(silhouette(pam.k4$clustering,demodist)) 
+# Silhouette = 0.21
+
+#PAM para 5 clusters
 set.seed(123)
 pam.k5 <- pam(DataPCA,5)
 pam.k5$medoids
 pam.k5$clustering
 table(kmeans.k5$cluster,pam.k5$clustering)
 plot(silhouette(pam.k5$clustering,demodist)) 
-# Silhouette = 0.2
-
-#Acho que estes gráficos não são úteis
-pairs(DataPCA, col=c(1:5)[pam.k5$clustering], lower.panel = NULL)
-clusplot(pam.k5, labels = 5, col.p = pam.k5$clustering)
-
+# Silhouette = 0.20
 
 
 
@@ -473,41 +442,26 @@ clusplot(pam.k5, labels = 5, col.p = pam.k5$clustering)
 
 
 ## Gaussian mixture model (GMM) 
-set.seed(123)
-# Aplicar GMM com 5 componentes do método k-means, porque foi o que obteu um valor de silhouette mais elevado(0,25)
-results.k5 <- Mclust(DataPCA, G = 5)
-results.k5$modelName
-results.k5$classification
-table(results.k5$classification)
-summary(results.k5, parameters = TRUE) #interpretar os valores log-likelihood, BIC e ICL
-table(results.k5$classification,kmeans.k5$cluster) 
-pairs(DataPCA, col=c(1:5)[results.k5$classification], lower.panel = NULL)
-results.k5 <- Mclust(DataPCA, G = 5)
-plot(results.k5, what = "density")
-plot(results.k5, what = "uncertainty")
-
-
 # Número ótimo de componentes
-BIC <- mclustBIC(DataPCA)
+BIC <- mclustBIC(DataPCA, G = 1:15)
 plot(BIC)
 results <- Mclust(DataPCA, x = BIC)
 summary(results, parameters = TRUE) #Conclui-se que o númnero ótimo de componentes é 3
 
-#Acho que estes gráficos não são úteis
+#Mapas de classificação e incerteza com 3 clusters
 plot(results, what = "classification")
-table(class, results$classification)
 plot(results, what = "uncertainty")
 
 
 
 
-#Como o número ótimo de componentes é 3, vai-se fazer o método k-means com 3 componentes
+##Como o número ótimo de componentes no GMM é 3, vai-se fazer o método k-means (porque foi o método que obteu uma silhoette mais elevada = 0.25) com 3 componentes
 
 #Método Ward para 3 clusters
-groups.k3<-cutree(hclust_demow, k=3) # cut tree into 4 clusters
+groups.k3<-cutree(hclust_demow, k=3)
 rect.hclust(hclust_demow, k=3, border="red") 
-aggregate(DataPCA,list(groups.k3), mean) #média de cada componente em cada um dos clusters
-table(groups.k3) #composição dos clusters
+aggregate(DataPCA,list(groups.k3), mean)
+table(groups.k3)
 
 #Método k-means para 3 clusters
 kmeans.k3 <- kmeans(DataPCA, 3,nstart=100) 
@@ -520,7 +474,6 @@ table(groups.k3,kmeans.k3$cluster)
 plot(silhouette(kmeans.k3$cluster,demodist))
 # Sillhouete = 0.23, o que significa que perdeu eficácia relativamente ao melhor método(k-means com 5 componentes),
 # mas em retorno ganhou simplicidade, porque passou de 5 componentes para apenas 3
-
 
 
 #Adicionar os clusters ao dataset para perceber a qual cluster os paises pertenciam (apenas para facilitar interpretacao)
