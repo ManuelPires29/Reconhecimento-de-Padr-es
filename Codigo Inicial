@@ -8,6 +8,7 @@ library(psych)
 library(ggplot2)
 library(cluster)
 library(mclust)
+library(factoextra)
 
 Data <- read.csv("CSVPadroesv2.csv", sep = ",", dec = ".", header = T)
 
