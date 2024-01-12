@@ -428,7 +428,7 @@ plot(silhouette(kmeans.k4$cluster,demodist))
 #Silhouette = 0.24
 
 
-# K-Means (com 5 clusters)
+## K-Means (com 5 clusters)
 kmeans.k5 <- kmeans(DataPCA, 5,nstart=100) 
 attributes(kmeans.k5)
 kmeans.k5$centers
@@ -445,17 +445,7 @@ plot(silhouette(kmeans.k5$cluster,demodist))
 pairs(DataPCA, col=c(1:5)[kmeans.k5$cluster], lower.panel = NULL)
 
 
-
-
-
-
-
-
-
-
-
-
-### PAM clustering ###
+## PAM clustering
 #É uma versão robusta do k-means, que agrupa os dados em torno dos medoides.
 
 set.seed(123)
@@ -477,8 +467,11 @@ clusplot(pam.k5, labels = 5, col.p = pam.k5$clustering)
 
 
 
-### Gaussian mixture model (GMM) ###
 
+### Clustering Probabilístico###
+
+
+## Gaussian mixture model (GMM) 
 set.seed(123)
 # Aplicar GMM com 5 componentes do método k-means, porque foi o que obteu um valor de silhouette mais elevado(0,25)
 results.k5 <- Mclust(DataPCA, G = 5)
