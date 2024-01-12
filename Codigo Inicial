@@ -529,6 +529,38 @@ plot(silhouette(kmeans.k3$cluster,demodist))
 
 
 
+#Adicionar os clusters ao dataset para perceber a qual cluster os paises pertenciam (apenas para facilitar interpretacao)
+Data_kNN$Cluster1 <- kmeans.k3$cluster==1
+Data_kNN$Cluster2 <- kmeans.k3$cluster==2
+Data_kNN$Cluster3 <- kmeans.k3$cluster==3
+
+
+#Analisar padrões e dar nome aos clusters com base nas variáveis profile
+
+#Cluster 1
+filtered_data1 <- subset(Data_kNN, Cluster1 == TRUE)
+table(filtered_data1$Predominant.Religion)
+table(filtered_data1$Continent)
+table(filtered_data1$World.Climate.Data)
+
+
+#Cluster 2
+filtered_data2 <- subset(Data_kNN, Cluster2 == TRUE)
+table(filtered_data2$Predominant.Religion)
+table(filtered_data2$Continent)
+table(filtered_data2$World.Climate.Data)
+
+
+#Cluster 3
+filtered_data3 <- subset(Data_kNN, Cluster3 == TRUE)
+table(filtered_data3$Predominant.Religion)
+table(filtered_data3$Continent)
+table(filtered_data3$World.Climate.Data)
+
+
+
+
+
 
 ### Tabela final ###
 result <- aggregate(DataPCA, list(kmeans.k3$cluster), mean)
