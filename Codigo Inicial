@@ -195,7 +195,7 @@ colnames(Data_kNN)[colnames(Data_kNN) == "Suicide.mortality.rate.per.100000.popu
 
 
 ####ACP####
-#Summary and covariance matrix
+#Matriz de covariância
 Data_numeric <- Data_kNN[,3:17]
 summary(Data_numeric)
 round(var(Data_numeric),2)
@@ -206,7 +206,7 @@ pairs(Data_numeric, pch = 19, lower.panel = NULL)
 # Adicionar uma legenda
 legend("bottomleft", legend = colnames(Data_numeric), col = 1:ncol(Data_numeric), pch = 19, title = "Variáveis")
 
-#correlation matrix
+#matriz de correlação
 correlation <- cor(Data_numeric)
 round(correlation,3)
 
@@ -237,40 +237,51 @@ KMO(correlation)
 
 pc15 <- principal(Data_numeric, nfactors=15, rotate="none", scores=TRUE) 
 
-#Eigenvalues - Variances of the principal components 
+#Eigenvalues - Variâncias dos componentes principais 
 round(pc15$values,3)
 #CRITÉRIO DE KAISER - reter os quatro primeiros componentes principais, já que são os únicos com valores maiores que 1
 
-#Screeplot - Find the elbow
+#Screeplot - Encontrar o cotovelo
 plot(pc15$values, type = "b", main = "Scree plot dos Dados", xlab = "Number of PC", ylab = "Eigenvalue")
 #De acordo com este gráfico, o "cotovelo" está no 3, por isso reter as 2 primeiras componentes principais
 
 #Olhar para a cumulative Var
 pc15$loadings
+#critério: cumulative var>= 0.6 --> logo, escolher 3 componentes principais 
 
-#Com base nas Cumulative Var e no critério de Keiser, escolher PC4
+#Há incertezas entre 3 ou 4 PC´s, logo, ver as comunalidades de cada solução
 
-#Let's extract a 4 component solution
+#Extrair 4 PC
 pc4 <- principal(Data_numeric, nfactors=4, rotate="none")
 pc4
-#Let's rotate the 4 components using varimax
+#Rodar 4 componentes usando varimax
 pc4r <- principal(Data_numeric, nfactors=4, rotate="varimax")
 pc4r$loadings
-
-#Communalities
+#Comunalidades
 round(pc4r$communality,4)
 
+#Extrair 3 PC
+pc3 <- principal(Data_numeric, nfactors=3, rotate="none")
+pc3
+#Rodar 4 componentes usando varimax
+pc3r <- principal(Data_numeric, nfactors=3, rotate="varimax")
+pc3r$loadings
+#Comunalidades
+round(pc3r$communality,3)
+
+
+#Escolher 4 PC´s por causa de critério de kaiser e porque com 3 PC perde-se demasiada informação(comprovado pelas comunalidades)
+
+
+#calcular os resultados
+pc4sc <- principal(Data_numeric, nfactors=4, rotate="none", scores=TRUE) 
+round(pc4sc$scores,4)
 
 
 #Escolher nomes para cada PCA
 
 
-
-#Compute the scores
-pc4sc <- principal(Data_numeric, nfactors=4, rotate="none", scores=TRUE) 
-round(pc4sc$scores,4)
-
-#Add scores to the data set as new variables
+#Aidcionar resultados aos dados como novas variáveis
 Data_kNN$Progresso.Socioenonomico <- pc4sc$scores[,1]
 Data_kNN$Dinamica.Populacional.e.Mercado.de.Trabalho <- pc4sc$scores[,2]
 Data_kNN$Iniciativa.economica <- pc4sc$scores[,3]
