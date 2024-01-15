@@ -243,7 +243,7 @@ round(pc15$values,3)
 
 #Screeplot - Find the elbow
 plot(pc15$values, type = "b", main = "Scree plot dos Dados", xlab = "Number of PC", ylab = "Eigenvalue")
-#De acordo com este gráfico, o "cotovelo" está no 3, por isso reter as 3 primeiras componentes principais
+#De acordo com este gráfico, o "cotovelo" está no 3, por isso reter as 2 primeiras componentes principais
 
 #Olhar para a cumulative Var
 pc15$loadings
