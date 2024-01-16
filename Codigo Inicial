@@ -303,6 +303,12 @@ Data_kNN <- merge(Data_kNN, Profile, by = "Country.Name", all.x = TRUE)
 DataPCA<-Data_kNN[,c(2,18,19,20,21)] #componentes principais
 DataProfile<-Data_kNN[,c(22,23,24,25)] #variaveis profile
 
+###Normalizar###
+# Identificar as colunas numéricas da PCA
+colunas_numericasPCA <- sapply(DataPCA, is.numeric)
+# Aplicar a função de normalização a todas as colunas numéricas da PCA
+DataPCA[, colunas_numericasPCA] <- lapply(DataPCA[, colunas_numericasPCA], normalize_minmax)
+
 countries<- DataPCA[,1] # Criar dataframe com apenas os nomes dos países, pode ser útil para representar gráficos
 DataPCA<- DataPCA[,-1] # retirar o nome dos países do dataframe
 
@@ -500,36 +506,37 @@ filtered_data1 <- subset(Data_kNN, Cluster1 == TRUE)
 table(filtered_data1$Predominant.Religion)
 table(filtered_data1$Continent)
 table(filtered_data1$World.Climate.Data)
+table(filtered_data1$Language)
 
 ##% de dados por coluna
 {
-#Continent
-# Contagem de frequência
-cont_freq_cont <- table(filtered_data1$Continent.x)
-# Porcentagem de cada valor
-C1_cont_percent <- prop.table(cont_freq_cont) * 100
-C1_cont_percent <- data.frame(Continent = names(C1_cont_percent), Percentage = C1_cont_percent)
-
-#Predominant.Religion.x
-# Contagem de frequência
-cont_freq_PR <- table(filtered_data1$Predominant.Religion.x)
-# Porcentagem de cada valor
-C1_PR_percent <- prop.table(cont_freq_PR) * 100
-C1_PR_percent <- data.frame(PredReligion = names(C1_PR_percent), Percentage = C1_PR_percent)
-
-#Language.x
-# Contagem de frequência
-cont_freq_L <- table(filtered_data1$Language.x)
-# Porcentagem de cada valor
-C1_LANG_percent <- prop.table(cont_freq_L) * 100
-C1_LANG_percent <- data.frame(Language = names(C1_LANG_percent), Percentage = C1_LANG_percent)
-
-#World.Climate.Data.x
-# Contagem de frequência
-cont_freq_WCD <- table(filtered_data1$World.Climate.Data.x)
-# Porcentagem de cada valor
-C1_WCD_percent <- prop.table(cont_freq_WCD) * 100
-C1_WCD_percent <- data.frame(WorldClimate = names(C1_WCD_percent), Percentage = C1_WCD_percent)
+  #Continent
+  # Contagem de frequência
+  cont_freq_cont <- table(filtered_data1$Continent)
+  # Porcentagem de cada valor
+  C1_cont_percent <- prop.table(cont_freq_cont) * 100
+  C1_cont_percent <- data.frame(Continent = names(C1_cont_percent), Percentage = C1_cont_percent)
+  
+  #Predominant.Religion.x
+  # Contagem de frequência
+  cont_freq_PR <- table(filtered_data1$Predominant.Religion)
+  # Porcentagem de cada valor
+  C1_PR_percent <- prop.table(cont_freq_PR) * 100
+  C1_PR_percent <- data.frame(PredReligion = names(C1_PR_percent), Percentage = C1_PR_percent)
+  
+  #Language.x
+  # Contagem de frequência
+  cont_freq_L <- table(filtered_data1$Language)
+  # Porcentagem de cada valor
+  C1_LANG_percent <- prop.table(cont_freq_L) * 100
+  C1_LANG_percent <- data.frame(Language = names(C1_LANG_percent), Percentage = C1_LANG_percent)
+  
+  #World.Climate.Data.x
+  # Contagem de frequência
+  cont_freq_WCD <- table(filtered_data1$World.Climate.Data)
+  # Porcentagem de cada valor
+  C1_WCD_percent <- prop.table(cont_freq_WCD) * 100
+  C1_WCD_percent <- data.frame(WorldClimate = names(C1_WCD_percent), Percentage = C1_WCD_percent)
 }
 
 #Cluster 2
@@ -537,33 +544,34 @@ filtered_data2 <- subset(Data_kNN, Cluster2 == TRUE)
 table(filtered_data2$Predominant.Religion)
 table(filtered_data2$Continent)
 table(filtered_data2$World.Climate.Data)
+table(filtered_data2$Language)
 
 ##% de dados por coluna
 {
   #Continent
   # Contagem de frequência
-  cont_freq_cont2 <- table(filtered_data2$Continent.x)
+  cont_freq_cont2 <- table(filtered_data2$Continent)
   # Porcentagem de cada valor
   C2_cont_percent <- prop.table(cont_freq_cont2) * 100
   C2_cont_percent <- data.frame(Continent = names(C2_cont_percent), Percentage = C2_cont_percent)
   
   #Predominant.Religion.x
   # Contagem de frequência
-  cont_freq_PR2 <- table(filtered_data2$Predominant.Religion.x)
+  cont_freq_PR2 <- table(filtered_data2$Predominant.Religion)
   # Porcentagem de cada valor
   C2_PR_percent <- prop.table(cont_freq_PR2) * 100
   C2_PR_percent <- data.frame(PredReligion = names(C2_PR_percent), Percentage = C2_PR_percent)
   
   #Language.x
   # Contagem de frequência
-  cont_freq_L2 <- table(filtered_data2$Language.x)
+  cont_freq_L2 <- table(filtered_data2$Language)
   # Porcentagem de cada valor
   C2_LANG_percent <- prop.table(cont_freq_L2) * 100
   C2_LANG_percent <- data.frame(Language = names(C2_LANG_percent), Percentage = C2_LANG_percent)
   
   #World.Climate.Data.x
   # Contagem de frequência
-  cont_freq_WCD2 <- table(filtered_data2$World.Climate.Data.x)
+  cont_freq_WCD2 <- table(filtered_data2$World.Climate.Data)
   # Porcentagem de cada valor
   C2_WCD_percent <- prop.table(cont_freq_WCD2) * 100
   C2_WCD_percent <- data.frame(WorldClimate = names(C2_WCD_percent), Percentage = C2_WCD_percent)
@@ -574,39 +582,38 @@ filtered_data3 <- subset(Data_kNN, Cluster3 == TRUE)
 table(filtered_data3$Predominant.Religion)
 table(filtered_data3$Continent)
 table(filtered_data3$World.Climate.Data)
+table(filtered_data3$Language)
 
 ##% de dados por coluna
 {
   #Continent
   # Contagem de frequência
-  cont_freq_cont3 <- table(filtered_data3$Continent.x)
+  cont_freq_cont3 <- table(filtered_data3$Continent)
   # Porcentagem de cada valor
   C3_cont_percent <- prop.table(cont_freq_cont3) * 100
   C3_cont_percent <- data.frame(Continent = names(C3_cont_percent), Percentage = C3_cont_percent)
   
   #Predominant.Religion.x
   # Contagem de frequência
-  cont_freq_PR3 <- table(filtered_data3$Predominant.Religion.x)
+  cont_freq_PR3 <- table(filtered_data3$Predominant.Religion)
   # Porcentagem de cada valor
   C3_PR_percent <- prop.table(cont_freq_PR3) * 100
   C3_PR_percent <- data.frame(PredReligion = names(C3_PR_percent), Percentage = C3_PR_percent)
   
   #Language.x
   # Contagem de frequência
-  cont_freq_L3 <- table(filtered_data3$Language.x)
+  cont_freq_L3 <- table(filtered_data3$Language)
   # Porcentagem de cada valor
   C3_LANG_percent <- prop.table(cont_freq_L3) * 100
   C3_LANG_percent <- data.frame(Language = names(C3_LANG_percent), Percentage = C3_LANG_percent)
   
   #World.Climate.Data.x
   # Contagem de frequência
-  cont_freq_WCD3 <- table(filtered_data3$World.Climate.Data.x)
+  cont_freq_WCD3 <- table(filtered_data3$World.Climate.Data)
   # Porcentagem de cada valor
   C3_WCD_percent <- prop.table(cont_freq_WCD3) * 100
   C3_WCD_percent <- data.frame(WorldClimate = names(C3_WCD_percent), Percentage = C3_WCD_percent)
 }
-
-
 
 
 
